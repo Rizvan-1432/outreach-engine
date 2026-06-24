@@ -1,0 +1,79 @@
+{
+  "name": "Email Domain Health Check",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [{ "field": "hours", "hoursInterval": 6 }]
+        }
+      },
+      "id": "schedule-trigger",
+      "name": "Every 6 hours",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [0, 0]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "http://api:8000/api/v1/email/check-domain/your-outreach-domain.com",
+        "options": {}
+      },
+      "id": "check-domain",
+      "name": "Check SPF/DMARC/MX",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [220, 0]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{ $json.score }}",
+              "operation": "smaller",
+              "value2": 70
+            }
+          ]
+        }
+      },
+      "id": "if-low-score",
+      "name": "Score below 70?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [440, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://api:8000/api/v1/telegram/notify",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"message\": \"⚠️ Email health: {{ $json.domain }} score {{ $json.score }}\\nIssues: {{ $json.issues.join(', ') }}\",\n  \"secret\": \"change-me\"\n}",
+        "options": {}
+      },
+      "id": "telegram-alert",
+      "name": "Telegram Alert",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [660, -80]
+    }
+  ],
+  "connections": {
+    "Every 6 hours": {
+      "main": [[{ "node": "Check SPF/DMARC/MX", "type": "main", "index": 0 }]]
+    },
+    "Check SPF/DMARC/MX": {
+      "main": [[{ "node": "Score below 70?", "type": "main", "index": 0 }]]
+    },
+    "Score below 70?": {
+      "main": [
+        [{ "node": "Telegram Alert", "type": "main", "index": 0 }],
+        []
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
