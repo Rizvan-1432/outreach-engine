@@ -47,7 +47,15 @@ docker compose up --build
 
 Импортируйте workflow из `n8n/workflows/`.
 
-### 3. CLI
+### 3. Деплой онлайн (Render / Railway)
+
+Пошаговая инструкция: **[DEPLOY.md](./DEPLOY.md)**
+
+- **Render** — API бесплатно (рекомендуется для старта)
+- **Railway** — API или полный стек API + n8n
+- **Vercel** — не подходит для FastAPI + n8n без доработок
+
+### 4. CLI
 
 ```bash
 python scripts/check_domain.py google.com

@@ -1,0 +1,16 @@
+# Blueprint: https://render.com/docs/blueprint-spec
+services:
+  - type: web
+    name: outreach-engine-api
+    runtime: docker
+    dockerfilePath: ./api/Dockerfile
+    dockerContext: ./api
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: TELEGRAM_CHAT_ID
+        sync: false
+      - key: N8N_WEBHOOK_SECRET
+        generateValue: true
