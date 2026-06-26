@@ -2,6 +2,9 @@
 
 Pet-проект под **outreach-автоматизацию**: email DNS, enrichment лидов, Telegram-алерты, n8n workflows.
 
+**Live API (Render):** https://outreach-engine-api.onrender.com/docs  
+**Vercel:** импортируйте репозиторий на [vercel.com](https://vercel.com) — см. [DEPLOY.md](./DEPLOY.md#деплой-на-vercel)
+
 **Автор:** Бакаев Ризван
 
 ## Стек
@@ -47,13 +50,13 @@ docker compose up --build
 
 Импортируйте workflow из `n8n/workflows/`.
 
-### 3. Деплой онлайн (Render / Railway)
+### 3. Деплой онлайн
 
 Пошаговая инструкция: **[DEPLOY.md](./DEPLOY.md)**
 
-- **Render** — API бесплатно (рекомендуется для старта)
+- **Vercel** — как другие ваши проекты (рекомендуется для портфолио)
+- **Render** — API бесплатно (уже задеплоено)
 - **Railway** — API или полный стек API + n8n
-- **Vercel** — не подходит для FastAPI + n8n без доработок
 
 ### 4. CLI
 

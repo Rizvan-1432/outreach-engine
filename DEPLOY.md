@@ -1,15 +1,70 @@
 # Деплой Outreach Engine онлайн
 
-Проект состоит из **API (FastAPI)** и **n8n**. На Vercel весь стек не поднять — используйте **Render** или **Railway**.
+Проект состоит из **API (FastAPI)** и **n8n**.
 
-| Компонент | Render | Railway | Vercel |
-|-----------|--------|---------|--------|
-| API (FastAPI) | ✅ | ✅ | ⚠️ только через serverless-доработку |
-| n8n | ❌ | ✅ (Docker + volume) | ❌ |
+| Компонент | Vercel | Render | Railway |
+|-----------|--------|--------|---------|
+| API (FastAPI) | ✅ | ✅ | ✅ |
+| n8n | ❌ | ❌ | ✅ (Docker + volume) |
 
 ---
 
-## Вариант 1 — API на Render (самый простой, бесплатно)
+## Деплой на Vercel (как Sentinel Tactical и другие проекты)
+
+### Шаг 1. Код на GitHub
+
+Репозиторий: https://github.com/Rizvan-1432/outreach-engine
+
+В репозитории уже есть:
+- `api/index.py` — точка входа для Vercel
+- `pyproject.toml` — зависимости и entrypoint
+- `requirements.txt` — в корне проекта
+
+### Шаг 2. Подключите Vercel
+
+1. Откройте https://vercel.com/new
+2. **Import Git Repository** → `Rizvan-1432/outreach-engine`
+3. **Framework Preset:** Other (или Vercel сам определит FastAPI)
+4. **Root Directory:** оставьте пустым (корень репозитория)
+5. **Build Command:** оставьте пустым
+6. **Output Directory:** оставьте пустым
+
+### Шаг 3. Переменные окружения (опционально)
+
+| Переменная | Значение |
+|------------|----------|
+| `TELEGRAM_BOT_TOKEN` | токен от @BotFather |
+| `TELEGRAM_CHAT_ID` | ваш chat id |
+| `N8N_WEBHOOK_SECRET` | секрет для webhook |
+
+### Шаг 4. Deploy
+
+Нажмите **Deploy**. Через 1–2 минуты получите URL:
+
+```
+https://outreach-engine.vercel.app
+```
+
+### Шаг 5. Проверка
+
+- Главная → редирект на `/docs`
+- https://ВАШ-URL.vercel.app/health
+- https://ВАШ-URL.vercel.app/api/v1/email/check-domain/gmail.com
+
+### Через CLI (альтернатива)
+
+```bash
+npm i -g vercel
+cd outreach-engine
+vercel login
+vercel --prod
+```
+
+> **n8n на Vercel не работает** — только API. Для workflow используйте [n8n.cloud](https://n8n.io/cloud) или Railway.
+
+---
+
+## Вариант 1 — API на Render (уже задеплоено)
 
 ### Шаг 1. Залейте код на GitHub
 
